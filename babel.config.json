@@ -1,0 +1,36 @@
+{
+    /** presets：文件处理预设 */
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "modules": false, // 避免转换为commonjs,而使用rollup定义的format
+                // "loose": true, // loose模式会生成简单的ES5代码，正常模式则会尽可能遵循ECMAScript 6的语义，一般不建议开启(默认false)
+                "targets": {
+                    "chrome": "58",
+                    "ie": "11",
+                    "safari": "10"
+                }
+            }
+        ]
+    ],
+    "plugins": [
+        /** @babel/plugin-external-helpers: 用于在编译 ES6+ 代码时生成一些辅助函数，以便减少编译后的代码的大小
+        当你使用 Babel 编译 ES6+ 代码时，编译后的代码可能会包含一些重复的辅助函数，
+        例如 _classCallCheck 和 _extends。这些辅助函数可能会导致编译后的代码变得更大，
+        因此 @babel/plugin-external-helpers 插件可以将这些辅助函数提取到一个单独的模块中，以便在编译后的代码中共享它们 */
+        "@babel/plugin-external-helpers",
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                /** 
+                @babel/runtime-corejs3 是一个 Babel 插件，它提供了一些在编译 ES6+ 代码时需要的辅助函数，这些函数不能被直接编译到代码中，而是需要从这个插件中导入。 
+                这个插件的作用是将你的 ES6+ 代码转换为可以在当前环境下运行的代码，它包含了一些在 ES6+ 中新增的特性的 polyfill，这些特性包括 Promise、Set、Map 等等。
+                同时，这个插件还提供了一些辅助函数，比如 _classCallCheck、_defineProperty 等等，这些函数在编译 ES6+ 代码时会被自动插入到你的代码中
+                */
+                "corejs": 3,
+                "useESModules": true // 关闭esm自动转化
+            }
+        ]
+    ]
+}
