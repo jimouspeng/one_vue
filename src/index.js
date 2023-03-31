@@ -1,10 +1,44 @@
-console.log('hahah');
+/** vue
+ * 响应式系统
+ * 渲染器：将虚拟dom渲染为真实dom
+ */
 
-const funA = () => {
-    console.log('箭头函数');
+import { createRenderer } from './renderer';
+import './reactivity';
+
+const vnode = {
+    tag: 'div',
+    props: {
+        onclick: () => console.log('渲染了'),
+    },
+    children: 'click me',
 };
 
-funA();
+const MyComponent = {
+    render() {
+        return {
+            tag: 'div',
+            props: {
+                onclick: () => console.log('hello, i am a component ~'),
+            },
+            children: 'a component ~~~',
+        };
+    },
+};
 
-const a = Promise.resolve();
-console.log(a, '没有嘛？？？？');
+const acomponent = {
+    tag: MyComponent,
+};
+
+const createApp = (...arg) => {
+    try {
+        const app = createRenderer().createApp(...arg);
+        return app;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+const App = createApp(acomponent);
+
+App.mount(document.body);
