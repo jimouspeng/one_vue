@@ -27,11 +27,11 @@ export default {
     /** plugins: 插件 */
     plugins: [
         RollupCommonjs(),
-        babel({
-            exclude: 'node_modules/**',
-            runtimeHelpers: true,
-            externalHelpers: true,
-        }),
+        // babel({
+        //     exclude: 'node_modules/**',
+        //     runtimeHelpers: true,
+        //     externalHelpers: true,
+        // }),
         nodeResolve({
             browser: true,
         }),

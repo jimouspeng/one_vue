@@ -8,24 +8,22 @@
     </head>
     <body>
         <script>
-            let fnActive,
-                fnSet = new Set()
-            function update() {
-                let a = 1
-                console.log(a)
-                fnSet.add(fnActive)
-            }
+            const fn1 = () => {
+                console.log('传入的副作用函数');
+            };
+            const fn2 = () => {
+                console.log('传入的另一个副作用函数');
+            };
             function effect(fn) {
-                const effFn = () => {
-                    fnActive = effFn
-                    fn()
-                }
-                effFn()
+                const effectFn = () => {
+                    let a = 1;
+                    fn();
+                    console.log(a);
+                };
+                return effectFn;
             }
-
-            effect(update)
-
-            console.log(fnSet)
+            console.log(effect(fn1) === effect(fn1)); // false
+            console.log(effect(fn1) === effect(fn2)); // false
         </script>
     </body>
 </html>
