@@ -48,7 +48,44 @@ export default class Watcher {
         }
     }
     /** 既是获取属性的getter操作，也是驱动更新视图的update操作 */
-    update() {}
+    update() {
+        if (this.lazy) {
+            this.dirty = true
+        } else if (this.sync) {
+            this.run()
+        } else {
+            queueWatcher(this)
+        }
+    }
     /** 副作用函数回调执行 */
-    run() {}
+    run() {
+        if (this.active) {
+            const value = this.get()
+            if (
+                value !== this.value ||
+                // Deep watchers and watchers on Object/Arrays should fire even
+                // when the value is the same, because the value may
+                // have mutated.
+                isObject(value) ||
+                this.deep
+            ) {
+                // set new value
+                const oldValue = this.value
+                this.value = value
+                if (this.user) {
+                    const info = `callback for watcher "${this.expression}"`
+                    invokeWithErrorHandling(this.cb, this.vm, [value, oldValue], this.vm, info)
+                } else {
+                    this.cb.call(this.vm, value, oldValue)
+                }
+            }
+        }
+    }
+    /** Depend on all deps collected by this watcher. */
+    depend() {
+        let i = this.deps.length
+        while (i--) {
+            this.deps[i].depend()
+        }
+    }
 }
