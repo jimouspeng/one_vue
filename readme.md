@@ -11,7 +11,7 @@
 遍历执行副作用函数时，判断是否匹配当前activeEffect，如果全等则过滤
 
 
-#### effect嵌套调用，activeEffect被嵌套的内层effect赋值覆盖，导致外级的依赖收集的activeEffect是内层的副作用函数，变更外级依赖相关的属性，执行的内层的副作用函数
+##### effect嵌套调用，activeEffect被嵌套的内层effect赋值覆盖，导致外级的依赖收集的activeEffect是内层的副作用函数，变更外级依赖相关的属性，执行的内层的副作用函数
 
 导致这个问题的本质是因为activeEffect只是一个通用的全局变量，赋值取值容易被覆盖
 
@@ -40,7 +40,7 @@ export function effect(fn) {
 `
 
 
-#### effect嵌套调用 + (内层effect执行++)，导致调用栈内存溢出
+##### effect嵌套调用 + (内层effect执行++)，导致调用栈内存溢出
 解决了单层effect执行++导致循环依赖，解决了effect嵌套导致依赖收集与副作用函数一致性问题，当effect嵌套遇上内层effect++, 无限依赖的问题又出现了
 
 本质：首先完成第一次依赖收集时；
