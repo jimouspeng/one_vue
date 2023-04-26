@@ -1,6 +1,6 @@
 /** 响应式api模块：构造响应式对象 */
 
-import { trackEffect, triggerEffect } from './effect.js'
+import { trackEffect, triggerEffect } from './effect-old.js'
 
 export function reactive(raw) {
     return new Proxy(raw, {

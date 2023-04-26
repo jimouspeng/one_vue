@@ -1,21 +1,43 @@
-import { reactive } from './reactive.js'
-import { effect } from './effect.js'
+/** 响应系统 */
+import { reactive } from './reactive.js';
+import { effect } from './effect-old.js';
 
-console.log('0999999999999')
+const obj = reactive({ text: 'hello world', name: 'jimous', age: 26 });
 
-let userInfo = reactive({
-    _age: 1,
-    name: '111',
-    // proxy对象：get陷阱
-    get age() {
-        return this._age
-    },
-})
+function htmlupdate() {
+    document.body.innerHTML = '';
+    const el = document.createElement('div');
+    el.innerText = 'my doctor' + obj.age;
+    document.body.appendChild(el);
+}
 
-effect(() => {
-    console.log(userInfo.age, '0000副作用函数执行')
-})
+let a, b;
 
-userInfo._age = 2
+// 嵌套effct副作用函数，需要处理activeEffect的覆盖问题
+effect(update);
 
-console.log('1111')
+function update() {
+    // debugger;
+    console.log('副作用函数update执行@@@');
+    effect(update2);
+    a = obj.text;
+}
+
+function update2() {
+    // debugger;
+    /** 嵌套的++ 一直被get收集，然后++赋值操作的时候，又再次触发get时候收集的effect函数，循环调用 */
+    obj.age++; // -> obj.age = obj.age + 1
+    console.log('副作用函数update2执行@@@');
+}
+// effect(update2)
+
+setTimeout(() => {
+    obj.text = 1;
+    // obj.age++
+    // setTimeout(() => {
+    //     obj.name = 'jimous is cool';
+    // }, 2000);
+    // obj.age = +1;
+}, 2000);
+
+// console.log(obj.text, 'kankan text');

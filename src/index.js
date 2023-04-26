@@ -4,15 +4,15 @@
  */
 
 import { createRenderer } from './renderer';
-import './reactivity';
+// import './reactivity';
 
-const vnode = {
-    tag: 'div',
-    props: {
-        onclick: () => console.log('渲染了'),
-    },
-    children: 'click me',
-};
+// const vnode = {
+//     tag: 'div',
+//     props: {
+//         onclick: () => console.log('渲染了'),
+//     },
+//     children: 'click me',
+// };
 
 const MyComponent = {
     render() {
